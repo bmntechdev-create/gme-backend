@@ -9,17 +9,29 @@ if (dns.setDefaultResultOrder) {
 
 const sendEmailWithAttachment = async ({ to, subject, text, html, attachments }) => {
     try {
+        const host = (process.env.EMAIL_HOST || '').trim();
+        const port = parseInt(process.env.EMAIL_PORT || '587');
+        const secure = port === 465;
+
+        if (!host || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+            throw new Error(`Missing email configuration: HOST=${!!host}, USER=${!!process.env.EMAIL_USER}, PASS=${!!process.env.EMAIL_PASS}`);
+        }
+
+        console.log(`Attempting to send email via ${host}:${port} (secure: ${secure})`);
+
         const transporter = nodemailer.createTransport({
-            host: (process.env.EMAIL_HOST || '').trim(),
-            port: parseInt(process.env.EMAIL_PORT || '587'),
-            secure: process.env.EMAIL_PORT == 465, // true for 465, false for other ports
+            host,
+            port,
+            secure,
             auth: {
                 user: (process.env.EMAIL_USER || '').trim(),
                 pass: (process.env.EMAIL_PASS || '').trim(),
             },
-            family: 4, // Force IPv4 to avoid ENETUNREACH errors on Railway
-            connectionTimeout: 10000, // 10 seconds
-            greetingTimeout: 10000,   // 10 seconds
+            // Some environments have issues with IPv6, but family: 4 can sometimes 
+            // cause timeouts if IPv4 routing is problematic. 
+            // We'll rely on dns.setDefaultResultOrder('ipv4first') at the top of the file instead.
+            connectionTimeout: 20000, // Increased to 20s
+            greetingTimeout: 20000,
         });
 
         const mailOptions = {
@@ -35,12 +47,13 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
         console.log('Email sent: %s', info.messageId);
         return info;
     } catch (error) {
-        console.error('Error sending email:', {
+        console.error('Detailed Email Error:', {
             message: error.message,
             code: error.code,
             command: error.command,
             address: error.address,
-            port: error.port
+            port: error.port,
+            stack: error.stack
         });
         throw error;
     }
