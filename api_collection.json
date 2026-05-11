@@ -1,0 +1,1662 @@
+{
+	"info": {
+		"_postman_id": "gme-backend-api-collection",
+		"name": "GME Backend API",
+		"description": "Comprehensive API collection for GME Backend modules including Auth, Yard Intake, Processing, Inventory, and more.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.environment.set(\"token\", jsonData.token);",
+									"    pm.environment.set(\"userId\", jsonData.user.id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@gme.com\",\n    \"password\": \"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"Admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jane Smith\",\n    \"email\": \"jane@example.com\",\n    \"role\": \"Operator\",\n    \"department\": \"Processing\",\n    \"phone\": \"+234...\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Inactive\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Yard Intake",
+			"item": [
+				{
+					"name": "Get All Intakes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/yard-intake",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"yard-intake"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Intake",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"supplierName\": \"Global Mining Ltd\",\n    \"vehicleNumber\": \"ABC-123-XY\",\n    \"materialType\": [\n        { \"name\": \"Lithium Ore\", \"grossWeight\": 15000, \"tareWeight\": 5000, \"netWeight\": 10000 },\n        { \"name\": \"Tantalite\", \"grossWeight\": 10000, \"tareWeight\": 7000, \"netWeight\": 3000 }\n    ],\n    \"customerName\": \"GME\",\n    \"status\": \"Pending\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/yard-intake",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"yard-intake"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Intake",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Completed\",\n    \"materialType\": [\n        { \"name\": \"Lithium Ore\", \"grossWeight\": 15000, \"tareWeight\": 5000, \"netWeight\": 10000 }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/yard-intake/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"yard-intake",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Intake",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/yard-intake/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"yard-intake",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Crushing & Processing",
+			"item": [
+				{
+					"name": "Get All Batches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/crushing-processing",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"crushing-processing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Batch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchId\": \"BATCH-2024-001\",\n    \"rawMaterial\": \"Lithium Ore\",\n    \"inputQuantity\": 5000,\n    \"machineAssigned\": \"Crusher-A1\",\n    \"outputGrade\": \"High\",\n    \"processingDate\": \"2024-04-18\",\n    \"supplierName\": \"Global Mining Ltd\",\n    \"customerName\": \"GME\",\n    \"grnReference\": \"GRN-2024-1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/crushing-processing",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"crushing-processing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Batch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Completed\",\n    \"outputQuantity\": 4850,\n    \"outputGrade\": \"Premium\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/crushing-processing/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"crushing-processing",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Assaying & Testing",
+			"item": [
+				{
+					"name": "Get All Samples",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/assaying-testing",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"assaying-testing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Sample",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sampleId\": \"SMPL-001\",\n    \"batchId\": \"BATCH-2024-001\",\n    \"testType\": \"Purity Test\",\n    \"labName\": \"CCBC Laboratory\",\n    \"purity\": 98.5,\n    \"status\": \"Completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/assaying-testing",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"assaying-testing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Sample",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Verified\",\n    \"purity\": 99.1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/assaying-testing/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"assaying-testing",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bagging & Warehouse",
+			"item": [
+				{
+					"name": "Get All Entries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/bagging-warehouse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bagging-warehouse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bagging Entry",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"baggingId\": \"BAG-001\",\n    \"batchId\": \"BATCH-2024-001\",\n    \"numberOfBags\": 100,\n    \"weightPerBag\": 50,\n    \"warehouseLocation\": \"Sector-A\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bagging-warehouse",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bagging-warehouse"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Bagging Entry",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numberOfBags\": 105,\n    \"warehouseLocation\": \"Sector-B\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/bagging-warehouse/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"bagging-warehouse",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Loading & Dispatch",
+			"item": [
+				{
+					"name": "Get All Dispatches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/loading-dispatch",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"loading-dispatch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Dispatch",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dispatchId\": \"DISP-001\",\n    \"batchId\": \"BATCH-2024-001\",\n    \"containerNumber\": \"CONT-9988\",\n    \"loadingWeight\": 5000,\n    \"destination\": \"Lagos Port\",\n    \"driverName\": \"Samuel Ade\",\n    \"status\": \"Loaded\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/loading-dispatch",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"loading-dispatch"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Dispatch",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Dispatched\",\n    \"exitTime\": \"2024-04-18T14:30:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/loading-dispatch/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"loading-dispatch",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Dispatch",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/loading-dispatch/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"loading-dispatch",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Export Documentation",
+			"item": [
+				{
+					"name": "Get All Shipments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/export-documentation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"export-documentation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Shipment Doc",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"shipmentId\": \"SHP-001\",\n    \"dispatchId\": \"DISP-001\",\n    \"customer\": \"Intl Minerals Inc\",\n    \"destination\": \"China\",\n    \"status\": \"Initial\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/export-documentation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"export-documentation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Shipment",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Documents Ready\",\n    \"destination\": \"Shanghai, China\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/export-documentation/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"export-documentation",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Document",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "document",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/export-documentation/upload/:id/:docKey",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"export-documentation",
+								"upload",
+								":id",
+								":docKey"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "docKey",
+									"value": "billOfLading",
+									"description": "Key like 'billOfLading', 'packingList', etc."
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Document",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/export-documentation/document/:id/:docKey",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"export-documentation",
+								"document",
+								":id",
+								":docKey"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								},
+								{
+									"key": "docKey",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoices",
+			"item": [
+				{
+					"name": "Get All Invoices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/invoices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Invoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"invoiceNo\": \"INV-2024-001\",\n    \"customerName\": \"GME\",\n    \"amount\": 1500000,\n    \"status\": \"Pending\",\n    \"items\": [\n        {\n            \"description\": \"Lithium Ore Processing\",\n            \"quantity\": 5000,\n            \"unitPrice\": 300\n        }\n    ],\n    \"subtotal\": 1500000,\n    \"taxAmount\": 112500\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invoices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Invoice",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Paid\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invoices/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Get Logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inventory/logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inventory",
+								"logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Inventory Log",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"batchId\": \"BATCH-2024-001\",\n    \"inputQty\": 5000,\n    \"outputQty\": 4950,\n    \"reason\": \"Processing Loss\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/inventory/logs",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inventory",
+								"logs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trace Batch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inventory/trace/:batchId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inventory",
+								"trace",
+								":batchId"
+							],
+							"variable": [
+								{
+									"key": "batchId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Inventory Log",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inventory/logs/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inventory",
+								"logs",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transportation",
+			"item": [
+				{
+					"name": "Get Transporters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transportation/transporters",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transportation",
+								"transporters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Transporter",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyName\": \"FastLogistics\",\n    \"contactPerson\": \"Ade Kunle\",\n    \"phone\": \"+234...\",\n    \"email\": \"info@fastlogistics.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transportation/transporters",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transportation",
+								"transporters"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trips",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transportation/trips",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transportation",
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Trip Assignment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"tripId\": \"TRIP-001\",\n    \"transporterId\": \"TRANSPORTER_ID\",\n    \"dispatchId\": \"DISPATCH_ID\",\n    \"route\": \"Lagos to Abuja\",\n    \"freightAmount\": 50000,\n    \"status\": \"Assigned\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transportation/trips",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transportation",
+								"trips"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Trip",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"In Transit\",\n    \"startDate\": \"2024-04-18T08:00:00Z\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/transportation/trips/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"transportation",
+								"trips",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Get All Clients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Global Minerals Inc\",\n    \"email\": \"contact@globalminerals.com\",\n    \"address\": \"Lagos, Nigeria\",\n    \"phone\": \"+234...\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/clients",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Client",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"address\": \"New Address, Nigeria\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/clients/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Client",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/clients/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"clients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Weighbridge",
+			"item": [
+				{
+					"name": "Get All Logs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/weighbridge",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"weighbridge"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Weighbridge Log",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"vehicleNo\": \"ABC-123\",\n    \"type\": \"Inbound\",\n    \"supplierName\": \"Global Mining\",\n    \"grossWeight\": 25000,\n    \"tareWeight\": 12000,\n    \"netWeight\": 13000,\n    \"status\": \"Completed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/weighbridge",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"weighbridge"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inspection & Certification",
+			"item": [
+				{
+					"name": "Get All Inspections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/inspection-certification",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inspection-certification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Inspection",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"inspectionId\": \"INSP-001\",\n    \"batchId\": \"BATCH-001\",\n    \"inspectorName\": \"John Inspector\",\n    \"inspectionType\": \"Quality Check\",\n    \"scheduledDate\": \"2024-04-18\",\n    \"status\": \"Scheduled\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/inspection-certification",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inspection-certification"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Inspection",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Completed\",\n    \"observations\": \"Quality standards met.\",\n    \"completedDate\": \"2024-04-18\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/inspection-certification/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"inspection-certification",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company Settings",
+			"item": [
+				{
+					"name": "Get Settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/company-settings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company-settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Settings",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"GME Interchange Updated\",\n    \"vatPercentage\": 8.0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/company-settings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"company-settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoices",
+			"item": [
+				{
+					"name": "Get All Invoices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/invoices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Invoice",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"invoiceNo\": \"INV-123456\",\n    \"customerName\": \"Test Client\",\n    \"shipmentId\": \"SHP-2024-001\",\n    \"quotationId\": \"{{quotationId}}\",\n    \"amount\": 1500,\n    \"dateTime\": \"2024-04-18T10:00:00Z\",\n    \"status\": \"Pending\",\n    \"items\": [\n        {\n            \"description\": \"Service Fee\",\n            \"quantity\": 1,\n            \"rate\": 1500\n        }\n    ],\n    \"subtotal\": 1500,\n    \"taxAmount\": 0,\n    \"discountAmount\": 0,\n    \"currency\": \"AED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invoices",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Invoice Status",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Paid\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/invoices/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"invoices",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Quotations",
+			"item": [
+				{
+					"name": "Get All Quotations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/quotations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quotations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Quotation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quotationNo\": \"QTN-2024-001\",\n    \"customerName\": \"John Doe\",\n    \"amount\": 5000,\n    \"dateTime\": \"2024-04-18T10:00:00Z\",\n    \"validUntil\": \"2024-05-18T10:00:00Z\",\n    \"status\": \"Draft\",\n    \"items\": [\n        {\n            \"description\": \"Lithium Ore\",\n            \"quantity\": 10,\n            \"rate\": 500\n        }\n    ],\n    \"subtotal\": 5000,\n    \"taxAmount\": 0,\n    \"discountAmount\": 0,\n    \"notes\": \"Test quotation\",\n    \"currency\": \"AED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/quotations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quotations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Quotation",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Sent\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/quotations/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quotations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download PDF",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/quotations/:id/download",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quotations",
+								":id",
+								"download"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Quotation",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/quotations/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"quotations",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5001/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
