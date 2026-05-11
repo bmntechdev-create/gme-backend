@@ -17,6 +17,14 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
             throw new Error(`Missing email configuration: HOST=${!!host}, USER=${!!process.env.EMAIL_USER}, PASS=${!!process.env.EMAIL_PASS}`);
         }
 
+        // Diagnostic: Check if we can resolve the host
+        try {
+            const { address } = await dns.promises.lookup(host);
+            console.log(`DNS Lookup Success: ${host} -> ${address}`);
+        } catch (dnsErr) {
+            console.error(`DNS Lookup Failed for ${host}:`, dnsErr.message);
+        }
+
         console.log(`Attempting to send email via ${host}:${port} (secure: ${secure})`);
 
         const transporter = nodemailer.createTransport({
@@ -27,10 +35,8 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
                 user: (process.env.EMAIL_USER || '').trim(),
                 pass: (process.env.EMAIL_PASS || '').trim(),
             },
-            // Some environments have issues with IPv6, but family: 4 can sometimes 
-            // cause timeouts if IPv4 routing is problematic. 
-            // We'll rely on dns.setDefaultResultOrder('ipv4first') at the top of the file instead.
-            connectionTimeout: 20000, // Increased to 20s
+            family: 4, // Explicitly force IPv4 again
+            connectionTimeout: 20000,
             greetingTimeout: 20000,
         });
 
