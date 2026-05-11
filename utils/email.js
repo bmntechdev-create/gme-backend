@@ -35,9 +35,16 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
                 user: (process.env.EMAIL_USER || '').trim(),
                 pass: (process.env.EMAIL_PASS || '').trim(),
             },
-            family: 4, // Explicitly force IPv4 again
-            connectionTimeout: 20000,
-            greetingTimeout: 20000,
+            // Enable detailed logging
+            logger: true,
+            debug: true,
+            tls: {
+                // Do not fail on invalid certs (common with some proxies)
+                rejectUnauthorized: false,
+                minVersion: 'TLSv1.2'
+            },
+            connectionTimeout: 30000, // 30s
+            greetingTimeout: 30000,
         });
 
         const mailOptions = {
