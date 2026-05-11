@@ -14,18 +14,8 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
         const secure = port === 465;
 
         if (!host || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-            throw new Error(`Missing email configuration: HOST=${!!host}, USER=${!!process.env.EMAIL_USER}, PASS=${!!process.env.EMAIL_PASS}`);
+            throw new Error('Email configuration is missing or incomplete.');
         }
-
-        // Diagnostic: Check if we can resolve the host
-        try {
-            const { address } = await dns.promises.lookup(host);
-            console.log(`DNS Lookup Success: ${host} -> ${address}`);
-        } catch (dnsErr) {
-            console.error(`DNS Lookup Failed for ${host}:`, dnsErr.message);
-        }
-
-        console.log(`Attempting to send email via ${host}:${port} (secure: ${secure})`);
 
         const transporter = nodemailer.createTransport({
             host,
@@ -35,16 +25,11 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
                 user: (process.env.EMAIL_USER || '').trim(),
                 pass: (process.env.EMAIL_PASS || '').trim(),
             },
-            // Enable detailed logging
-            logger: true,
-            debug: true,
             tls: {
-                // Do not fail on invalid certs (common with some proxies)
-                rejectUnauthorized: false,
-                minVersion: 'TLSv1.2'
+                rejectUnauthorized: false
             },
-            connectionTimeout: 30000, // 30s
-            greetingTimeout: 30000,
+            connectionTimeout: 20000,
+            greetingTimeout: 20000,
         });
 
         const mailOptions = {
@@ -60,14 +45,7 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
         console.log('Email sent: %s', info.messageId);
         return info;
     } catch (error) {
-        console.error('Detailed Email Error:', {
-            message: error.message,
-            code: error.code,
-            command: error.command,
-            address: error.address,
-            port: error.port,
-            stack: error.stack
-        });
+        console.error('Error sending email:', error.message);
         throw error;
     }
 };
