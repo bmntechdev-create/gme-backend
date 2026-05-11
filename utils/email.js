@@ -1,4 +1,11 @@
 const nodemailer = require('nodemailer');
+const dns = require('dns');
+
+// Force IPv4 because Railway/Node.js 17+ sometimes defaults to IPv6 
+// which causes ENETUNREACH errors with some SMTP servers.
+if (dns.setDefaultResultOrder) {
+    dns.setDefaultResultOrder('ipv4first');
+}
 
 const sendEmailWithAttachment = async ({ to, subject, text, html, attachments }) => {
     try {
