@@ -11,4 +11,7 @@ router.post('/', inspectionCertificationController.createInspection);
 // Update inspection observations or status
 router.patch('/:id', inspectionCertificationController.updateInspection);
 
+// Delete inspection
+router.delete('/:id', inspectionCertificationController.deleteInspection);
+
 module.exports = router;

@@ -77,3 +77,18 @@ exports.updateInspection = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Delete inspection
+// @route   DELETE /api/inspection-certification/:id
+// @access  Private
+exports.deleteInspection = async (req, res) => {
+    try {
+        const inspection = await InspectionCertification.findByIdAndDelete(req.params.id);
+        if (!inspection) {
+            return res.status(404).json({ message: 'Inspection not found' });
+        }
+        res.json({ message: 'Inspection deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};

@@ -11,4 +11,7 @@ router.post('/', crushingProcessingController.createBatch);
 // Update batch details
 router.patch('/:id', crushingProcessingController.updateBatch);
 
+// Delete batch
+router.delete('/:id', crushingProcessingController.deleteBatch);
+
 module.exports = router;

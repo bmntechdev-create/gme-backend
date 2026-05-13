@@ -11,4 +11,7 @@ router.post('/', assayingTestingController.createSample);
 // Update test result or status
 router.patch('/:id', assayingTestingController.updateSample);
 
+// Delete test sample
+router.delete('/:id', assayingTestingController.deleteSample);
+
 module.exports = router;

@@ -89,3 +89,18 @@ exports.updateBatch = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Delete batch
+// @route   DELETE /api/crushing-processing/:id
+// @access  Private
+exports.deleteBatch = async (req, res) => {
+    try {
+        const batch = await CrushingProcessing.findByIdAndDelete(req.params.id);
+        if (!batch) {
+            return res.status(404).json({ message: 'Batch not found' });
+        }
+        res.json({ message: 'Batch deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};

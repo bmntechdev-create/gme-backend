@@ -24,6 +24,11 @@ const protect = async (req, res, next) => {
     }
 
     try {
+        if (!process.env.JWT_SECRET) {
+            console.error('[Auth] JWT_SECRET is not defined in environment variables');
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+
         // Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -35,7 +40,11 @@ const protect = async (req, res, next) => {
 
         next();
     } catch (error) {
-        console.error('Auth Middleware Error:', error.message);
+        if (error.name === 'JsonWebTokenError' && error.message === 'invalid signature') {
+            console.warn(`[Auth] Invalid signature from ${req.ip}. The token was likely signed with a different secret or is from another environment.`);
+        } else {
+            console.error('Auth Middleware Error:', error.message);
+        }
         res.status(401).json({ message: 'Not authorized, token failed' });
     }
 };

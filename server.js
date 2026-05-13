@@ -62,6 +62,7 @@ const clientRoutes = require('./routes/clients');
 const userRoutes = require('./routes/users');
 const companySettingsRoutes = require('./routes/companySettings');
 const quotationRoutes = require('./routes/quotations');
+const dashboardRoutes = require('./routes/dashboard');
 
 // Middleware imports
 const { protect } = require('./middleware/authMiddleware');
@@ -73,6 +74,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // Protected Routes (Require Authentication)
+app.use('/api/dashboard', protect, dashboardRoutes);
 app.use('/api/yard-intake', protect, yardIntakeRoutes);
 app.use('/api/crushing-processing', protect, crushingProcessingRoutes);
 app.use('/api/assaying-testing', protect, assayingTestingRoutes);

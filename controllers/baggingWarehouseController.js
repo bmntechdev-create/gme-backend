@@ -82,3 +82,18 @@ exports.updateEntry = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Delete bagging entry
+// @route   DELETE /api/bagging-warehouse/:id
+// @access  Private
+exports.deleteEntry = async (req, res) => {
+    try {
+        const entry = await BaggingWarehouse.findByIdAndDelete(req.params.id);
+        if (!entry) {
+            return res.status(404).json({ message: 'Bagging record not found' });
+        }
+        res.json({ message: 'Bagging record deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};

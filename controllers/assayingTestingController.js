@@ -82,3 +82,18 @@ exports.updateSample = async (req, res) => {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+// @desc    Delete test sample
+// @route   DELETE /api/assaying-testing/:id
+// @access  Private
+exports.deleteSample = async (req, res) => {
+    try {
+        const sample = await AssayingTesting.findByIdAndDelete(req.params.id);
+        if (!sample) {
+            return res.status(404).json({ message: 'Sample not found' });
+        }
+        res.json({ message: 'Sample deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
