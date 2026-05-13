@@ -1,30 +1,35 @@
 const nodemailer = require('nodemailer');
 const dns = require('dns');
 
+/**
+ * Sends an email using Gmail SMTP via Nodemailer.
+ * Optimized for Railway by forcing IPv4 and using the 'service' shortcut.
+ */
 const sendEmailWithAttachment = async ({ to, subject, text, html, attachments }) => {
-    console.log(`Attempting to send email to: ${to} with subject: ${subject}`);
+    // Force IPv4 resolution to prevent ENETUNREACH on Railway
+    try {
+        dns.setDefaultResultOrder('ipv4first');
+    } catch (e) {
+        // Fallback for older node versions
+    }
+
+    console.log(`Attempting to send email via Gmail SMTP to: ${to} with subject: ${subject}`);
     
     try {
         const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: Number(process.env.EMAIL_PORT),
-            secure: Number(process.env.EMAIL_PORT) === 465, // true for 465, false for other ports
+            service: 'gmail',
             auth: {
                 user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
+                pass: process.env.EMAIL_PASS, // This must be a 16-character App Password
             },
-            // Force IPv4 resolution to avoid ENETUNREACH on platforms that don't support IPv6 outbound
-            lookup: (hostname, options, callback) => {
-                dns.lookup(hostname, { family: 4 }, callback);
-            },
-            // Add timeouts to handle network issues on cloud platforms
-            connectionTimeout: 10000, // 10 seconds
-            greetingTimeout: 10000,   // 10 seconds
-            socketTimeout: 15000,     // 15 seconds
+            // High timeouts to handle cloud network jitter
+            connectionTimeout: 15000, 
+            greetingTimeout: 15000,
+            socketTimeout: 20000,
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_FROM,
+            from: process.env.EMAIL_FROM || process.env.EMAIL_USER,
             to,
             subject,
             text,
@@ -33,17 +38,17 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
         };
 
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully: %s', info.messageId);
+        console.log('Email sent successfully via Gmail SMTP: %s', info.messageId);
         return info;
     } catch (error) {
-        console.error('CRITICAL: Error sending email via SMTP:');
+        console.error('CRITICAL: Error sending email via Gmail SMTP:');
         console.error('Error Message:', error.message);
         console.error('Error Code:', error.code);
-        console.error('Error Command:', error.command);
         
-        // Provide more helpful advice for Railway users
         if (error.code === 'ENETUNREACH' || error.code === 'ETIMEDOUT') {
-            console.error('HINT: This is likely a networking issue. Ensure EMAIL_HOST is correct and IPv4 resolution is forced.');
+            console.error('HINT: Railway is having trouble reaching Google servers. Forcing IPv4 should help.');
+        } else if (error.code === 'EAUTH') {
+            console.error('HINT: Authentication failed. Ensure you are using a 16-character "App Password", NOT your regular Gmail password.');
         }
         
         throw error;

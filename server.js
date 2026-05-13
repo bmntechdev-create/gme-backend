@@ -4,8 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const cookieParser = require('cookie-parser');
-const dns = require('dns');
-dns.setDefaultResultOrder('ipv4first');
 require('dotenv').config();
 
 const app = express();
