@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const dns = require('dns');
 
 const sendEmailWithAttachment = async ({ to, subject, text, html, attachments }) => {
     console.log(`Attempting to send email to: ${to} with subject: ${subject}`);
@@ -11,6 +12,10 @@ const sendEmailWithAttachment = async ({ to, subject, text, html, attachments })
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS,
+            },
+            // Force IPv4 resolution to avoid ENETUNREACH on platforms that don't support IPv6 outbound
+            lookup: (hostname, options, callback) => {
+                dns.lookup(hostname, { family: 4 }, callback);
             },
             // Add timeouts to handle network issues on cloud platforms
             connectionTimeout: 10000, // 10 seconds
